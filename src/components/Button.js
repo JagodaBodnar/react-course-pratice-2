@@ -9,6 +9,7 @@ const StyledButton = styled.button`
   color: #fff;
   max-width: 100px;
   margin: 5px 0;
+  cursor: pointer;
 `
 
 const Button = ({children}) => {

@@ -2,6 +2,7 @@ import {useState} from "react";
 import Button from "./Button";
 import styled from 'styled-components'
 
+
 const StyledForm = styled.form`
   display: flex;
   flex-direction: column;
@@ -21,9 +22,10 @@ const StyledInput = styled.input`
 
 `
 
-const AddUserForm = ({addNewUser}) => {
+const AddUserForm = ({addNewUser, openModal}) => {
     const [name, setName] = useState('')
     const [age, setAge] = useState('')
+
     const nameHandler = (event) => {
         console.log(event.target.value)
         setName(event.target.value)
@@ -34,10 +36,11 @@ const AddUserForm = ({addNewUser}) => {
     }
     const submitHandler = (event) => {
         event.preventDefault();
-        if(name.trim().length === 0 || age.trim().length === 0){
+        if (name.trim().length === 0 || age.trim().length === 0) {
+            openModal(true)
             return;
         }
-        const userData ={
+        const userData = {
             id: Math.random().toString(),
             name: name,
             age: age,
@@ -48,13 +51,15 @@ const AddUserForm = ({addNewUser}) => {
     }
 
     return (
-        <StyledForm onSubmit={submitHandler}>
-            <StyledLabel htmlFor="username">User name</StyledLabel>
-            <StyledInput type="text" id="username" value={name} onChange={nameHandler}/>
-            <StyledLabel htmlFor="age">Age</StyledLabel>
-            <StyledInput type="number" id="age" value={age} onChange={ageHandler}/>
-            <Button type="submit">Add user</Button>
-        </StyledForm>
+        <>
+            <StyledForm onSubmit={submitHandler}>
+                <StyledLabel htmlFor="username">User name</StyledLabel>
+                <StyledInput type="text" id="username" value={name} onChange={nameHandler}/>
+                <StyledLabel htmlFor="age">Age</StyledLabel>
+                <StyledInput type="number" id="age" value={age} onChange={ageHandler}/>
+                <Button type="submit">Add user</Button>
+            </StyledForm>
+        </>
     )
 }
 export default AddUserForm;
