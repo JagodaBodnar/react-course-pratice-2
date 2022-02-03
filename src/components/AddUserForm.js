@@ -1,4 +1,4 @@
-import {useState} from "react";
+import {useRef, useState} from "react";
 import Button from "./Button";
 import styled from 'styled-components'
 
@@ -23,40 +23,34 @@ const StyledInput = styled.input`
 `
 
 const AddUserForm = ({addNewUser, openModal}) => {
-    const [name, setName] = useState('')
-    const [age, setAge] = useState('')
+    const nameInputRef = useRef()
+    const ageInputRef = useRef()
 
-    const nameHandler = (event) => {
-        console.log(event.target.value)
-        setName(event.target.value)
-    }
-    const ageHandler = (event) => {
-        console.log(event.target.value)
-        setAge(event.target.value)
-    }
     const submitHandler = (event) => {
         event.preventDefault();
-        if (name.trim().length === 0 || age.trim().length === 0) {
+        const enteredName= nameInputRef.current.value
+        const enteredAge = ageInputRef.current.value
+        if (enteredName.trim().length === 0 || enteredAge.trim().length === 0) {
             openModal(true)
             return;
         }
         const userData = {
             id: Math.random().toString(),
-            name: name,
-            age: age,
+            name: enteredName,
+            age: enteredAge,
         }
         addNewUser(userData)
-        setName('')
-        setAge('')
+        nameInputRef.current.value =''
+        ageInputRef.current.value =''
     }
 
     return (
         <>
             <StyledForm onSubmit={submitHandler}>
                 <StyledLabel htmlFor="username">User name</StyledLabel>
-                <StyledInput type="text" id="username" value={name} onChange={nameHandler}/>
+                <StyledInput type="text" id="username" ref={nameInputRef}/>
                 <StyledLabel htmlFor="age">Age</StyledLabel>
-                <StyledInput type="number" id="age" value={age} onChange={ageHandler}/>
+                <StyledInput type="number" id="age"  ref={ageInputRef}/>
                 <Button type="submit">Add user</Button>
             </StyledForm>
         </>

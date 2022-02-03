@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import Card from "./Card";
+import ReactDOM, {createPortal} from 'react-dom'
 
 const StyledBackdrop = styled.div`
   background-color: rgba(0, 0, 0, 0.5);
@@ -25,15 +25,26 @@ const StyledCard = styled.div`
   padding: 20px;
   cursor: pointer;
 `
-
-const Modal = ({closeModal}) => {
+const Backdrop = ({closeModal}) => {
+    return (
+        <StyledBackdrop onClick={() => closeModal(false)}/>
+    )
+}
+const ModalOverlay = ({closeModal}) => {
     return (
         <>
-            <StyledBackdrop onClick={() => closeModal(false)}/>
             <StyledCard onClick={() => closeModal(false)}>
                 <h1>Error message</h1>
                 <p>Check inputs neither of them can be empty.</p>
             </StyledCard>
+        </>
+    )
+}
+const Modal = ({closeModal}) => {
+    return (
+        <>
+            {ReactDOM.createPortal(<Backdrop closeModal={closeModal}/>, document.getElementById('backdrop-root'))}
+            {ReactDOM.createPortal(<ModalOverlay closeModal={closeModal}/>, document.getElementById('overlay-root'))}
         </>
     )
 }
